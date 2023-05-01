@@ -32,6 +32,7 @@ flow for better stitching perfection
 import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
 class SEMImageStitcher():
     '''
@@ -63,13 +64,16 @@ class SEMImageStitcher():
 
     def _read_images(self): 
         """
-        Read images using OpenCV library. The check on the file presence should be added here.
+        Read images using OpenCV library. The check on the file replace should be added here.
         """
         self.images = []   
         for image in self.fnames:
-            img = cv.imread(image)
-            self.images.append(self._crop_image(img))
-
+            try:
+                img = cv.imread(image)
+                self.images.append(self._crop_image(img))
+            except:
+                print('Troubles with reading ', image)
+                sys.exit(-1)
     def _crop_image(self, img):
         """The method for cropping images.
 
@@ -219,7 +223,7 @@ if __name__ == "__main__":
 
     # Create a list of images that will be stitched. The resulting image is MP393_FF0000+MP393_FF0001+MP393_FF0002+MP393_FF0003
     fname1 = 'imgs/MP393_FF0000.tiff'
-    fname2 = 'imgs/MP393_FF0001.tiff'
+    fname2 = 'imgs/MP393_FF00011.tiff'
     fname3 = 'imgs/MP393_FF0002.tiff'
     fname4 = 'imgs/MP393_FF0003.tiff'
     sname = 'imgs/result.png'
